@@ -10,6 +10,15 @@ async function getPrismaClient() {
   const tursoToken = process.env.TURSO_AUTH_TOKEN
   const postgresUrl = process.env.DATABASE_URL
 
+  // On Vercel, pendant le build, on force l'utilisation de SQLite local
+  // pour être cohérent avec ce que fait 'prisma db push' dans prisma.config.ts
+  if (process.env.VERCEL) {
+    console.log('Vercel Build Environment: Forcing local SQLite')
+    const dbPath = path.resolve(process.cwd(), 'dev.db')
+    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
+    return new PrismaClient({ adapter })
+  }
+
   if (tursoUrl && tursoUrl !== 'undefined') {
     const adapter = new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
     return new PrismaClient({ adapter })
