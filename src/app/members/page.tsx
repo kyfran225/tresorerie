@@ -14,8 +14,8 @@ export default async function MembersPage() {
     <div className="space-y-6">
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Membres</h1>
-          <p className="text-gray-500 text-sm">{members.length} membres enregistrés</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Membres</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{members.length} membres enregistrés</p>
         </div>
         <Link
           href="/members/new"
