@@ -12,7 +12,7 @@ async function main() {
     authToken: authToken,
   })
 
-  const adapter = new PrismaLibSql(client)
+  const adapter = new PrismaLibSql(client as any)
   const prisma = new PrismaClient({ adapter })
 
   const hashedPassword = await bcrypt.hash('admin123', 10)
