@@ -3,6 +3,7 @@ import { PrismaLibSql } from '@prisma/adapter-libsql'
 import { PrismaPg } from '@prisma/adapter-pg'
 import pg from 'pg'
 import * as bcrypt from 'bcryptjs'
+import path from 'path'
 
 async function getPrismaClient() {
   const tursoUrl = process.env.TURSO_DATABASE_URL
@@ -13,7 +14,9 @@ async function getPrismaClient() {
   // si DATABASE_URL n'est pas défini. On doit s'aligner pour trouver les tables.
   if (process.env.VERCEL && !postgresUrl) {
     console.log('Vercel Build: Using local SQLite to match "db push"')
-    return new PrismaClient()
+    const dbPath = path.resolve(process.cwd(), 'dev.db')
+    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
+    return new PrismaClient({ adapter })
   }
 
   if (tursoUrl && tursoUrl !== 'undefined') {
@@ -24,7 +27,9 @@ async function getPrismaClient() {
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   } else {
-    return new PrismaClient()
+    const dbPath = path.resolve(process.cwd(), 'dev.db')
+    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
+    return new PrismaClient({ adapter })
   }
 }
 
