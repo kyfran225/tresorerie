@@ -10,20 +10,30 @@ const getPrismaClient = () => {
   const tursoToken = process.env.TURSO_AUTH_TOKEN
   const postgresUrl = process.env.DATABASE_URL
 
-  // Option 1: Turso / LibSQL (Recommended for production if using Turso)
+  // PRIORITÉ 1: Turso / LibSQL (Forcé si sur Vercel)
   if (tursoUrl && tursoUrl !== 'undefined') {
-    const adapter = new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
+    console.log('Runtime: Using Turso Adapter')
+    const adapter = new PrismaLibSql({
+      url: tursoUrl,
+      authToken: tursoToken
+    })
     return new PrismaClient({ adapter })
   }
 
-  // Option 2: PostgreSQL (Vercel / Standard Postgres)
+  // PRIORITÉ 2: PostgreSQL
   if (postgresUrl && (postgresUrl.startsWith('postgresql://') || postgresUrl.startsWith('postgres://'))) {
+    console.log('Runtime: Using Postgres Adapter')
     const pool = new pg.Pool({ connectionString: postgresUrl })
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   }
 
-  // Option 3: Local SQLite (Default for development)
+  // PRIORITÉ 3: Local SQLite (Seulement si pas sur Vercel)
+  if (process.env.VERCEL) {
+    throw new Error('Production Error: TURSO_DATABASE_URL is missing on Vercel!')
+  }
+
+  console.log('Runtime: Using Native SQLite (Local)')
   return new PrismaClient()
 }
 
