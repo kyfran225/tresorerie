@@ -25,7 +25,7 @@ const getPrismaClient = () => {
   }
 
   // Option 3: Local SQLite (Default for development)
-  const dbPath = path.resolve(process.cwd(), 'dev.db')
+  const dbPath = path.join(process.cwd(), 'prisma/dev.db')
   const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
   return new PrismaClient({ adapter })
 }

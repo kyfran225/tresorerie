@@ -18,10 +18,14 @@ async function getPrismaClient() {
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   } else {
-    // Force direct file path for local SQLite on Vercel
-    const dbPath = path.resolve(process.cwd(), 'prisma/dev.db')
-    console.log(`Checking for database at: ${dbPath}`)
-    const adapter = new PrismaLibSql({ url: 'file:./prisma/dev.db' })
+    const dbPath = path.join(process.cwd(), 'prisma/dev.db')
+    const fs = require('fs')
+    if (fs.existsSync(dbPath)) {
+      console.log(`Database file found at ${dbPath}, size: ${fs.statSync(dbPath).size} bytes`)
+    } else {
+      console.log(`Database file NOT found at ${dbPath}`)
+    }
+    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
     return new PrismaClient({ adapter })
   }
 }
