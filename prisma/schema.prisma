@@ -1,9 +1,10 @@
-generator client {
+﻿generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -11,7 +12,7 @@ model User {
   name          String?
   email         String?    @unique
   password      String
-  role          String     @default("ASSISTANT") // ADMIN or ASSISTANT
+  role          String     @default("ASSISTANT")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   payments      Payment[]
@@ -24,7 +25,7 @@ model Member {
   phone         String
   email         String?
   joinDate      DateTime   @default(now())
-  status        String     @default("ACTIVE") // ACTIVE, INACTIVE, ARCHIVED
+  status        String     @default("ACTIVE")
   notes         String?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -36,10 +37,10 @@ model Contribution {
   title         String
   description   String?
   amount        Float
-  type          String     // MONTHLY, ANNUAL, EXCEPTIONAL
+  type          String
   startDate     DateTime
   endDate       DateTime?
-  status        String     @default("OPEN") // OPEN, CLOSED
+  status        String     @default("OPEN")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   payments      Payment[]
@@ -53,7 +54,7 @@ model Payment {
   contribution   Contribution @relation(fields: [contributionId], references: [id])
   amount         Float
   date           DateTime     @default(now())
-  method         String       // CASH, ORANGE_MONEY, MTN_MONEY, WAVE, OTHER
+  method         String
   recordedById   String
   recordedBy     User         @relation(fields: [recordedById], references: [id])
   receiptNumber  String       @unique
@@ -74,10 +75,10 @@ model AuditLog {
   id          String   @id @default(cuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
-  action      String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
-  entity      String   // User, Member, Contribution, Payment
+  action      String
+  entity      String
   entityId    String
-  oldValue    String?  // JSON string
-  newValue    String?  // JSON string
+  oldValue    String?
+  newValue    String?
   timestamp   DateTime @default(now())
 }
