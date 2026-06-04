@@ -9,6 +9,13 @@ async function getPrismaClient() {
   const tursoToken = process.env.TURSO_AUTH_TOKEN
   const postgresUrl = process.env.DATABASE_URL
 
+  // On Vercel, pendant le build, 'npx prisma db push' utilise SQLite local par défaut
+  // si DATABASE_URL n'est pas défini. On doit s'aligner pour trouver les tables.
+  if (process.env.VERCEL && !postgresUrl) {
+    console.log('Vercel Build: Using local SQLite to match "db push"')
+    return new PrismaClient()
+  }
+
   if (tursoUrl && tursoUrl !== 'undefined') {
     const adapter = new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
     return new PrismaClient({ adapter })
@@ -17,8 +24,6 @@ async function getPrismaClient() {
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   } else {
-    // For local SQLite, use the default Prisma engine (native)
-    // This is more reliable for 'db push' consistency on Vercel
     return new PrismaClient()
   }
 }
