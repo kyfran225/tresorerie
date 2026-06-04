@@ -3,6 +3,8 @@ import { formatCurrency } from "@/lib/utils"
 import { FileText, Download, BarChart3, PieChart } from "lucide-react"
 import ExportButtons from "./ExportButtons"
 
+export const dynamic = 'force-dynamic'
+
 export default async function ReportsPage() {
   const [payments, contributions, memberStats] = await Promise.all([
     prisma.payment.findMany({

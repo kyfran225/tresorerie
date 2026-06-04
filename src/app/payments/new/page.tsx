@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import PaymentForm from "./PaymentForm"
 
+export const dynamic = 'force-dynamic'
+
 export default async function NewPaymentPage() {
   const [members, contributions] = await Promise.all([
     prisma.member.findMany({ where: { status: 'ACTIVE' }, orderBy: { fullName: 'asc' } }),

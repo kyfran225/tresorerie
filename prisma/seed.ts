@@ -1,23 +1,34 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
-import { createClient } from '@libsql/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import pg from 'pg'
 import * as bcrypt from 'bcryptjs'
 
+async function getPrismaClient() {
+  const tursoUrl = process.env.TURSO_DATABASE_URL
+  const tursoToken = process.env.TURSO_AUTH_TOKEN
+  const postgresUrl = process.env.DATABASE_URL
+
+  if (tursoUrl && tursoUrl !== 'undefined') {
+    const adapter = new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
+    return new PrismaClient({ adapter })
+  } else if (postgresUrl && (postgresUrl.startsWith('postgresql://') || postgresUrl.startsWith('postgres://'))) {
+    const pool = new pg.Pool({ connectionString: postgresUrl })
+    const adapter = new PrismaPg(pool)
+    return new PrismaClient({ adapter })
+  } else {
+    const adapter = new PrismaLibSql({ url: 'file:./dev.db' })
+    return new PrismaClient({ adapter })
+  }
+}
+
 async function main() {
-  const connectionString = process.env.TURSO_DATABASE_URL || 'file:./dev.db'
-  const authToken = process.env.TURSO_AUTH_TOKEN
-
-  const client = createClient({
-    url: connectionString,
-    authToken: authToken,
-  })
-
-  const adapter = new PrismaLibSql(client as any)
-  const prisma = new PrismaClient({ adapter })
-
+  const prisma = await getPrismaClient()
   const hashedPassword = await bcrypt.hash('admin123', 10)
 
-  // Create Admin
+  console.log('Checking for admin account...')
+
+  // Create Admin if not exists
   const admin = await prisma.user.upsert({
     where: { email: 'admin@association.com' },
     update: {},
@@ -29,7 +40,7 @@ async function main() {
     },
   })
 
-  // Create Assistant
+  // Create Assistant if not exists
   const assistant = await prisma.user.upsert({
     where: { email: 'assistant@association.com' },
     update: {},

@@ -3,6 +3,8 @@ import Link from "next/link"
 import { Plus } from "lucide-react"
 import MembersList from "./MembersList"
 
+export const dynamic = 'force-dynamic'
+
 export default async function MembersPage() {
   const members = await prisma.member.findMany({
     orderBy: { fullName: 'asc' }

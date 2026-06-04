@@ -3,6 +3,8 @@ import Link from "next/link"
 import { Plus, Settings, Calendar, Banknote } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 
+export const dynamic = 'force-dynamic'
+
 export default async function ContributionsPage() {
   const contributions = await prisma.contribution.findMany({
     orderBy: { createdAt: 'desc' }

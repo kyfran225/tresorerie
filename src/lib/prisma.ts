@@ -1,21 +1,33 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
-import { createClient } from '@libsql/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import pg from 'pg'
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
-const connectionString = process.env.TURSO_DATABASE_URL || 'file:./dev.db'
-const authToken = process.env.TURSO_AUTH_TOKEN
+const getPrismaClient = () => {
+  const tursoUrl = process.env.TURSO_DATABASE_URL
+  const tursoToken = process.env.TURSO_AUTH_TOKEN
+  const postgresUrl = process.env.DATABASE_URL
 
-const client = createClient({
-  url: connectionString,
-  authToken: authToken,
-})
+  // Option 1: Turso / LibSQL (Recommended for production if using Turso)
+  if (tursoUrl && tursoUrl !== 'undefined') {
+    const adapter = new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
+    return new PrismaClient({ adapter })
+  }
 
-const adapter = new PrismaLibSql(client)
+  // Option 2: PostgreSQL (Vercel / Standard Postgres)
+  if (postgresUrl && (postgresUrl.startsWith('postgresql://') || postgresUrl.startsWith('postgres://'))) {
+    const pool = new pg.Pool({ connectionString: postgresUrl })
+    const adapter = new PrismaPg(pool)
+    return new PrismaClient({ adapter })
+  }
 
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter })
+  // Option 3: Local SQLite (Default for development)
+  const adapter = new PrismaLibSql({ url: 'file:./dev.db' })
+  return new PrismaClient({ adapter })
+}
+
+export const prisma = globalForPrisma.prisma || getPrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma

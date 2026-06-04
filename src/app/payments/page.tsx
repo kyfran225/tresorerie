@@ -4,6 +4,8 @@ import { CreditCard, Search, Filter, Plus } from "lucide-react"
 import Link from "next/link"
 import ReceiptDownloadButton from "./ReceiptDownloadButton"
 
+export const dynamic = 'force-dynamic'
+
 export default async function PaymentsPage() {
   const payments = await prisma.payment.findMany({
     include: {

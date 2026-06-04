@@ -13,6 +13,8 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import ReceiptDownloadButton from "../../payments/ReceiptDownloadButton"
 
+export const dynamic = 'force-dynamic'
+
 export default async function MemberDetailsPage({ params }: { params: { id: string } }) {
   const member = await prisma.member.findUnique({
     where: { id: params.id },
