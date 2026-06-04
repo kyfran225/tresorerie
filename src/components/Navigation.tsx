@@ -52,6 +52,13 @@ export default function Navigation() {
             </Link>
           )
         })}
+        <button
+          onClick={() => signOut()}
+          className="flex flex-col items-center gap-1 text-xs text-red-500 transition-colors hover:text-red-600"
+        >
+          <LogOut className="h-6 w-6" />
+          <span>Déconnecter</span>
+        </button>
       </nav>
 
       {/* Desktop Sidebar */}

@@ -15,9 +15,10 @@ import ReceiptDownloadButton from "../../payments/ReceiptDownloadButton"
 
 export const dynamic = 'force-dynamic'
 
-export default async function MemberDetailsPage({ params }: { params: { id: string } }) {
+export default async function MemberDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const member = await prisma.member.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       payments: {
         include: {
