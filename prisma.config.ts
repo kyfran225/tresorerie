@@ -1,9 +1,6 @@
 import { defineConfig } from "prisma/config";
 import path from "path";
 
-import { defineConfig } from "prisma/config";
-import path from "path";
-
 const getDatabaseUrl = () => {
   const tursoUrl = process.env.TURSO_DATABASE_URL;
   const tursoToken = process.env.TURSO_AUTH_TOKEN;
