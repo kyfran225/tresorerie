@@ -3,7 +3,6 @@ import { PrismaLibSql } from '@prisma/adapter-libsql'
 import { PrismaPg } from '@prisma/adapter-pg'
 import pg from 'pg'
 import * as bcrypt from 'bcryptjs'
-import path from 'path'
 
 async function getPrismaClient() {
   const tursoUrl = process.env.TURSO_DATABASE_URL
@@ -18,15 +17,9 @@ async function getPrismaClient() {
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   } else {
-    const dbPath = path.join(process.cwd(), 'prisma/dev.db')
-    const fs = require('fs')
-    if (fs.existsSync(dbPath)) {
-      console.log(`Database file found at ${dbPath}, size: ${fs.statSync(dbPath).size} bytes`)
-    } else {
-      console.log(`Database file NOT found at ${dbPath}`)
-    }
-    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
-    return new PrismaClient({ adapter })
+    // For local SQLite, use the default Prisma engine (native)
+    // This is more reliable for 'db push' consistency on Vercel
+    return new PrismaClient()
   }
 }
 

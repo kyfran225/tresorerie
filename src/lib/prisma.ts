@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
 import { PrismaPg } from '@prisma/adapter-pg'
 import pg from 'pg'
-import path from 'path'
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
@@ -25,9 +24,7 @@ const getPrismaClient = () => {
   }
 
   // Option 3: Local SQLite (Default for development)
-  const dbPath = path.join(process.cwd(), 'prisma/dev.db')
-  const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
-  return new PrismaClient({ adapter })
+  return new PrismaClient()
 }
 
 export const prisma = globalForPrisma.prisma || getPrismaClient()
