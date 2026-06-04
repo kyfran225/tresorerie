@@ -18,11 +18,10 @@ async function getPrismaClient() {
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
   } else {
-    // IMPORTANT: On Vercel, the CLI (db push) might use a different path than the runtime.
-    // Try both root and prisma/ directory if the first one fails, or just use a fixed path.
+    // Force direct file path for local SQLite on Vercel
     const dbPath = path.resolve(process.cwd(), 'prisma/dev.db')
-    console.log(`Using database at: ${dbPath}`)
-    const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
+    console.log(`Checking for database at: ${dbPath}`)
+    const adapter = new PrismaLibSql({ url: 'file:./prisma/dev.db' })
     return new PrismaClient({ adapter })
   }
 }
