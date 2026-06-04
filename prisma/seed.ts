@@ -19,6 +19,7 @@ async function getPrismaClient() {
     return new PrismaClient({ adapter })
   } else {
     const dbPath = path.resolve(process.cwd(), 'dev.db')
+    console.log(`Using database at: ${dbPath}`)
     const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
     return new PrismaClient({ adapter })
   }
