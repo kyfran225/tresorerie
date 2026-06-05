@@ -215,7 +215,7 @@ export default function ReportsClient({
           )}
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
           <table className="w-full text-left text-sm">
             <thead className="bg-background text-secondary uppercase text-[10px] font-bold">
               <tr>
