@@ -74,24 +74,48 @@ export default async function Dashboard() {
       </header>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => {
-          const Icon = stat.icon
-          return (
-            <div key={stat.name} className="card-premium p-6 group">
-              <div className="flex items-center justify-between">
-                <div className={cn("p-3 rounded-2xl transition-transform duration-300 group-hover:scale-110", stat.bg, stat.border, "border dark:bg-slate-900/50 dark:border-slate-800")}>
-                  <Icon className={cn("h-6 w-6", stat.color)} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Row 1: Members */}
+        <div className="grid grid-cols-2 gap-4">
+          {[stats[0], stats[1]].map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div key={stat.name} className="card-premium p-6 group">
+                <div className="flex items-center justify-between">
+                  <div className={cn("p-3 rounded-2xl transition-transform duration-300 group-hover:scale-110", stat.bg, stat.border, "border dark:bg-slate-900/50 dark:border-slate-800")}>
+                    <Icon className={cn("h-6 w-6", stat.color)} />
+                  </div>
+                  <div className="h-1.5 w-1.5 rounded-full bg-border" />
                 </div>
-                <div className="h-1.5 w-1.5 rounded-full bg-border" />
+                <div className="mt-5">
+                  <p className="text-[10px] sm:text-xs font-semibold text-secondary uppercase tracking-wider truncate">{stat.name}</p>
+                  <p className="mt-1 text-xl sm:text-2xl font-black text-foreground tracking-tight">{stat.value}</p>
+                </div>
               </div>
-              <div className="mt-5">
-                <p className="text-sm font-semibold text-secondary uppercase tracking-wider">{stat.name}</p>
-                <p className="mt-1 text-2xl font-black text-foreground tracking-tight">{stat.value}</p>
+            )
+          })}
+        </div>
+
+        {/* Row 2: Finances */}
+        <div className="grid grid-cols-2 gap-4">
+          {[stats[2], stats[3]].map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div key={stat.name} className="card-premium p-6 group">
+                <div className="flex items-center justify-between">
+                  <div className={cn("p-3 rounded-2xl transition-transform duration-300 group-hover:scale-110", stat.bg, stat.border, "border dark:bg-slate-900/50 dark:border-slate-800")}>
+                    <Icon className={cn("h-6 w-6", stat.color)} />
+                  </div>
+                  <div className="h-1.5 w-1.5 rounded-full bg-border" />
+                </div>
+                <div className="mt-5">
+                  <p className="text-[10px] sm:text-xs font-semibold text-secondary uppercase tracking-wider truncate">{stat.name}</p>
+                  <p className="mt-1 text-xl sm:text-2xl font-black text-foreground tracking-tight">{stat.value}</p>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
 
       {/* Main Content Grid */}
