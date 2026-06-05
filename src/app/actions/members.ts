@@ -36,3 +36,35 @@ export async function createMember(formData: FormData) {
   revalidatePath("/members")
   return member
 }
+
+export async function deleteMember(id: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) throw new Error("Non autorisé")
+
+  const member = await prisma.member.findUnique({
+    where: { id },
+    include: { _count: { select: { payments: true } } }
+  })
+
+  if (!member) throw new Error("Membre non trouvé")
+  
+  if (member._count.payments > 0) {
+    throw new Error("Impossible de supprimer un membre ayant des paiements associés. Désactivez-le plutôt.")
+  }
+
+  await prisma.member.delete({
+    where: { id }
+  })
+
+  await createAuditLog({
+    userId: (session.user as any).id,
+    action: "DELETE",
+    entity: "Member",
+    entityId: id,
+    oldValue: member
+  })
+
+  revalidatePath("/members")
+  revalidatePath("/")
+  return { success: true }
+}

@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import DeleteContributionButton from "./DeleteContributionButton"
 
 export const dynamic = 'force-dynamic'
 
@@ -50,14 +51,17 @@ export default async function ContributionDetailsPage({ params }: { params: Prom
             <Banknote className="h-10 w-10" />
           </div>
           <div className="flex-1 space-y-1">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3">
               <h1 className="text-2xl font-bold text-foreground">{contribution.title}</h1>
-              <span className={cn(
-                "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
-                contribution.status === 'OPEN' ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "bg-background text-secondary border border-border"
-              )}>
-                {contribution.status}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className={cn(
+                  "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
+                  contribution.status === 'OPEN' ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "bg-background text-secondary border border-border"
+                )}>
+                  {contribution.status}
+                </span>
+                <DeleteContributionButton contributionId={contribution.id} hasPayments={contribution.payments.length > 0} />
+              </div>
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-secondary">
               <div className="flex items-center gap-1 text-primary font-bold">

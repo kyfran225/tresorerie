@@ -12,6 +12,7 @@ import {
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import ReceiptDownloadButton from "../../payments/ReceiptDownloadButton"
+import DeleteMemberButton from "./DeleteMemberButton"
 
 export const dynamic = 'force-dynamic'
 
@@ -147,6 +148,7 @@ export default async function MemberDetailsPage({ params }: { params: Promise<{ 
                <button className="flex items-center justify-center gap-2 w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-card transition-colors">
                  Modifier le profil
                </button>
+               <DeleteMemberButton memberId={member.id} hasPayments={member.payments.length > 0} />
             </div>
           </section>
         </div>

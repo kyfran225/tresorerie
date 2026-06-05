@@ -50,3 +50,41 @@ export async function createPayment(formData: FormData) {
 
   return payment
 }
+
+export async function deletePayment(id: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) throw new Error("Non autorisé")
+
+  // Find payment first for audit log
+  const payment = await prisma.payment.findUnique({
+    where: { id },
+    include: { receipt: true }
+  })
+
+  if (!payment) throw new Error("Paiement non trouvé")
+
+  // Delete associated receipt first if it exists (though it should be handled by Prisma if configured, but let's be explicit)
+  if (payment.receipt) {
+    await prisma.receipt.delete({ where: { paymentId: id } })
+  }
+
+  await prisma.payment.delete({
+    where: { id }
+  })
+
+  await createAuditLog({
+    userId: (session.user as any).id,
+    action: "DELETE",
+    entity: "Payment",
+    entityId: id,
+    oldValue: payment
+  })
+
+  revalidatePath("/")
+  revalidatePath("/payments")
+  revalidatePath("/reports")
+  revalidatePath(`/members/${payment.memberId}`)
+  revalidatePath(`/contributions/${payment.contributionId}`)
+
+  return { success: true }
+}

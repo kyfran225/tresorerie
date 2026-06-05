@@ -3,6 +3,7 @@ import { formatCurrency } from "@/lib/utils"
 import { CreditCard, Search, Filter, Plus } from "lucide-react"
 import Link from "next/link"
 import ReceiptDownloadButton from "./ReceiptDownloadButton"
+import DeletePaymentButton from "./DeletePaymentButton"
 
 export const dynamic = 'force-dynamic'
 
@@ -101,8 +102,9 @@ export default async function PaymentsPage() {
                     <td className="px-6 py-4 text-right font-bold text-foreground">
                       {formatCurrency(payment.amount)}
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 text-right flex items-center justify-end gap-2">
                       <ReceiptDownloadButton payment={payment} />
+                      <DeletePaymentButton paymentId={payment.id} />
                     </td>
                   </tr>
                 ))

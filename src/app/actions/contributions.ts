@@ -41,3 +41,35 @@ export async function createContribution(formData: FormData) {
   revalidatePath("/contributions")
   return contribution
 }
+
+export async function deleteContribution(id: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) throw new Error("Non autorisé")
+
+  const contribution = await prisma.contribution.findUnique({
+    where: { id },
+    include: { _count: { select: { payments: true } } }
+  })
+
+  if (!contribution) throw new Error("Cotisation non trouvée")
+
+  if (contribution._count.payments > 0) {
+    throw new Error("Impossible de supprimer une cotisation ayant des paiements associés. Clôturez-la plutôt.")
+  }
+
+  await prisma.contribution.delete({
+    where: { id }
+  })
+
+  await createAuditLog({
+    userId: (session.user as any).id,
+    action: "DELETE",
+    entity: "Contribution",
+    entityId: id,
+    oldValue: contribution
+  })
+
+  revalidatePath("/contributions")
+  revalidatePath("/")
+  return { success: true }
+}
