@@ -10,6 +10,8 @@
   --card: #ffffff;
   --card-foreground: #0f172a;
   --border: #e2e8f0;
+  --input-bg: #f8fafc;
+  --input-border: #e2e8f0;
 }
 
 @theme inline {
@@ -41,6 +43,8 @@
     --card: #0f172a;
     --card-foreground: #f8fafc;
     --border: #1e293b;
+    --input-bg: #020617;
+    --input-border: #1e293b;
   }
 }
 
@@ -60,5 +64,9 @@ body {
 }
 
 input, select, textarea {
-  @apply transition-all duration-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none;
+  @apply bg-background text-foreground border-border transition-all duration-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none;
+}
+
+label {
+  @apply text-foreground/70;
 }

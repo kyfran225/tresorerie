@@ -114,29 +114,29 @@ export default function ReportsClient({
     <div className="space-y-6">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Rapports & Exports</h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Analysez et exportez les données financières filtrées</p>
+          <h1 className="text-2xl font-bold text-foreground">Rapports & Exports</h1>
+          <p className="text-secondary text-sm">Analysez et exportez les données financières filtrées</p>
         </div>
         <ExportButtons data={exportData} />
       </header>
 
       {/* Filters Bar */}
-      <div className="grid gap-4 md:grid-cols-4 bg-white dark:bg-gray-800 p-4 rounded-xl border shadow-sm">
+      <div className="grid gap-4 md:grid-cols-4 card-premium p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary" />
           <input
             type="text"
             placeholder="Membre ou Reçu..."
-            className="w-full pl-9 pr-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-border bg-background rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-foreground"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-gray-400 shrink-0" />
+          <Calendar className="h-4 w-4 text-secondary shrink-0" />
           <select
-            className="w-full py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className="w-full py-2 text-sm border border-border bg-background rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-foreground"
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
           >
@@ -146,9 +146,9 @@ export default function ReportsClient({
         </div>
 
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-gray-400 shrink-0" />
+          <Filter className="h-4 w-4 text-secondary shrink-0" />
           <select
-            className="w-full py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className="w-full py-2 text-sm border border-border bg-background rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-foreground"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
           >
@@ -157,7 +157,7 @@ export default function ReportsClient({
         </div>
 
         <select
-          className="w-full py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          className="w-full py-2 text-sm border border-border bg-background rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-foreground"
           value={selectedContribution}
           onChange={(e) => setSelectedContribution(e.target.value)}
         >
@@ -168,38 +168,38 @@ export default function ReportsClient({
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Synthèse Financière */}
-        <div className="rounded-xl border bg-white dark:bg-gray-800 p-6 shadow-sm">
+        <div className="card-premium p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+            <div className="p-2 bg-primary/10 rounded-lg text-primary">
               <BarChart3 className="h-5 w-5" />
             </div>
-            <h2 className="font-bold text-gray-900 dark:text-white">Synthèse Financière</h2>
+            <h2 className="font-bold text-foreground">Synthèse Financière</h2>
           </div>
           <div className="space-y-4">
-            <div className="flex justify-between items-center pb-2 border-b dark:border-gray-700">
-              <span className="text-gray-500 dark:text-gray-400">Total Collecté</span>
-              <span className="font-bold text-lg text-green-600 dark:text-green-400">{formatCurrency(totalCollected)}</span>
+            <div className="flex justify-between items-center pb-2 border-b border-border">
+              <span className="text-secondary">Total Collecté</span>
+              <span className="font-bold text-lg text-emerald-600 dark:text-emerald-400">{formatCurrency(totalCollected)}</span>
             </div>
-            <div className="flex justify-between items-center pb-2 border-b dark:border-gray-700">
-              <span className="text-gray-500 dark:text-gray-400">Nombre de Paiements</span>
-              <span className="font-bold dark:text-white">{filteredPayments.length}</span>
+            <div className="flex justify-between items-center pb-2 border-b border-border">
+              <span className="text-secondary">Nombre de Paiements</span>
+              <span className="font-bold text-foreground">{filteredPayments.length}</span>
             </div>
           </div>
         </div>
 
         {/* État des Membres */}
-        <div className="rounded-xl border bg-white dark:bg-gray-800 p-6 shadow-sm">
+        <div className="card-premium p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+            <div className="p-2 bg-accent/10 rounded-lg text-accent">
               <PieChart className="h-5 w-5" />
             </div>
-            <h2 className="font-bold text-gray-900 dark:text-white">État des Membres</h2>
+            <h2 className="font-bold text-foreground">État des Membres</h2>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {memberStats.map(stat => (
-              <div key={stat.status} className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border dark:border-gray-700 text-center">
-                <span className="block text-xs text-gray-500 dark:text-gray-400 uppercase font-bold mb-1">{stat.status}</span>
-                <span className="text-xl font-bold dark:text-white">{stat._count}</span>
+              <div key={stat.status} className="p-3 bg-background rounded-lg border border-border text-center">
+                <span className="block text-xs text-secondary uppercase font-bold mb-1">{stat.status}</span>
+                <span className="text-xl font-bold text-foreground">{stat._count}</span>
               </div>
             ))}
           </div>
@@ -209,15 +209,15 @@ export default function ReportsClient({
       {/* Historique Récent */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Historique des Transactions ({filteredPayments.length})</h2>
+          <h2 className="text-lg font-bold text-foreground">Historique des Transactions ({filteredPayments.length})</h2>
           {filteredPayments.length > 0 && (
-            <span className="text-xs text-gray-500">Affichage de tous les résultats filtrés</span>
+            <span className="text-xs text-secondary">Affichage de tous les résultats filtrés</span>
           )}
         </div>
 
-        <div className="overflow-x-auto rounded-xl border bg-white dark:bg-gray-800 shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 uppercase text-[10px] font-bold">
+            <thead className="bg-background text-secondary uppercase text-[10px] font-bold">
               <tr>
                 <th className="px-4 py-3">Réf / Date</th>
                 <th className="px-4 py-3">Membre</th>
@@ -226,37 +226,37 @@ export default function ReportsClient({
                 <th className="px-4 py-3 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+            <tbody className="divide-y divide-border">
               {filteredPayments.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-12 text-center text-gray-400 dark:text-gray-500 italic">
+                  <td colSpan={5} className="px-4 py-12 text-center text-secondary italic">
                     Aucune transaction ne correspond à vos filtres
                   </td>
                 </tr>
               ) : (
                 filteredPayments.map(p => (
-                  <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <tr key={p.id} className="hover:bg-background transition-colors">
                     <td className="px-4 py-3">
-                      <div className="font-bold text-gray-900 dark:text-white">{p.receiptNumber}</div>
-                      <div className="text-[10px] text-gray-500">{new Date(p.date).toLocaleDateString('fr-FR')}</div>
+                      <div className="font-bold text-foreground">{p.receiptNumber}</div>
+                      <div className="text-[10px] text-secondary">{new Date(p.date).toLocaleDateString('fr-FR')}</div>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/members/${p.member.id}`} className="font-medium text-blue-600 hover:underline">
+                      <Link href={`/members/${p.member.id}`} className="font-medium text-primary hover:underline">
                         {p.member.fullName}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-gray-600 dark:text-gray-300">
+                      <span className="text-xs px-2 py-0.5 bg-secondary/10 rounded text-secondary">
                         {p.contribution.title}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-gray-900 dark:text-white">
+                    <td className="px-4 py-3 text-right font-bold text-foreground">
                       {formatCurrency(p.amount)}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Link
                         href={`/payments?search=${p.receiptNumber}`}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
                       >
                         <Eye className="h-4 w-4" />
                         Voir

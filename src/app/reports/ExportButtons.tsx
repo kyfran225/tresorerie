@@ -35,7 +35,7 @@ export default function ExportButtons({ data }: ExportButtonsProps) {
       <button
         onClick={exportToExcel}
         disabled={data.length === 0}
-        className="flex items-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-green-700 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50 transition-colors"
       >
         <FileSpreadsheet className="h-4 w-4" />
         Excel
@@ -43,7 +43,7 @@ export default function ExportButtons({ data }: ExportButtonsProps) {
       <button
         onClick={exportToCSV}
         disabled={data.length === 0}
-        className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-card disabled:opacity-50 transition-colors"
       >
         <FileText className="h-4 w-4" />
         CSV

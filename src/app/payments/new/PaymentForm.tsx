@@ -28,22 +28,26 @@ export default function PaymentForm({ members, contributions }: PaymentFormProps
       await createPayment(formData)
       router.push("/payments") // Redirect to payments list
       router.refresh()
-    } catch (error) {
-      alert("Une erreur est survenue lors de l'enregistrement")
+    } catch (error: any) {
+      if (error.message === "Non autorisé") {
+        router.push("/login?callbackUrl=/payments/new")
+      } else {
+        alert("Une erreur est survenue lors de l'enregistrement")
+      }
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl border shadow-sm">
+    <form onSubmit={handleSubmit} className="card-premium p-6">
       <div className="grid gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Membre *</label>
+          <label className="block text-sm font-medium mb-1">Membre *</label>
           <select
             name="memberId"
             required
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full rounded-lg py-2.5 px-3 sm:text-sm"
           >
             <option value="">Sélectionner un membre</option>
             {members.map(m => (
@@ -53,13 +57,13 @@ export default function PaymentForm({ members, contributions }: PaymentFormProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Cotisation *</label>
+          <label className="block text-sm font-medium mb-1">Cotisation *</label>
           <select
             name="contributionId"
             required
             value={selectedContributionId}
             onChange={(e) => setSelectedContributionId(e.target.value)}
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full rounded-lg py-2.5 px-3 sm:text-sm"
           >
             <option value="">Sélectionner la cotisation</option>
             {contributions.map(c => (
@@ -70,34 +74,34 @@ export default function PaymentForm({ members, contributions }: PaymentFormProps
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Montant payé (CFA) *</label>
+            <label className="block text-sm font-medium mb-1">Montant payé (CFA) *</label>
             <input
               name="amount"
               type="number"
               required
               defaultValue={defaultAmount}
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className="block w-full rounded-lg py-2.5 px-3 sm:text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+            <label className="block text-sm font-medium mb-1">Date *</label>
             <input
               name="date"
               type="date"
               required
               defaultValue={new Date().toISOString().split('T')[0]}
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className="block w-full rounded-lg py-2.5 px-3 sm:text-sm"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Moyen de réception *</label>
+          <label className="block text-sm font-medium mb-1">Moyen de réception *</label>
           <select
             name="method"
             required
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full rounded-lg py-2.5 px-3 sm:text-sm"
           >
             <option value="CASH">Espèces</option>
             <option value="ORANGE_MONEY">Orange Money</option>
@@ -111,7 +115,7 @@ export default function PaymentForm({ members, contributions }: PaymentFormProps
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex justify-center items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50 transition-all"
+        className="w-full flex justify-center items-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50 transition-all mt-6"
       >
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (
           <>
