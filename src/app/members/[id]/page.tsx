@@ -145,9 +145,12 @@ export default async function MemberDetailsPage({ params }: { params: Promise<{ 
                >
                  Enregistrer un paiement
                </Link>
-               <button className="flex items-center justify-center gap-2 w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-card transition-colors">
+               <Link
+                 href={`/members/${member.id}/edit`}
+                 className="flex items-center justify-center gap-2 w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-card transition-colors"
+               >
                  Modifier le profil
-               </button>
+               </Link>
                <DeleteMemberButton memberId={member.id} hasPayments={member.payments.length > 0} />
             </div>
           </section>
