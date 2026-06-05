@@ -88,7 +88,7 @@ export default async function Dashboard() {
                   <div className="h-1.5 w-1.5 rounded-full bg-border" />
                 </div>
                 <div className="mt-5">
-                  <p className="text-[10px] sm:text-xs font-semibold text-secondary uppercase tracking-wider truncate">{stat.name}</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-secondary uppercase tracking-wider leading-tight">{stat.name}</p>
                   <p className="mt-1 text-xl sm:text-2xl font-black text-foreground tracking-tight">{stat.value}</p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default async function Dashboard() {
                   <div className="h-1.5 w-1.5 rounded-full bg-border" />
                 </div>
                 <div className="mt-5">
-                  <p className="text-[10px] sm:text-xs font-semibold text-secondary uppercase tracking-wider truncate">{stat.name}</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-secondary uppercase tracking-wider leading-tight">{stat.name}</p>
                   <p className="mt-1 text-xl sm:text-2xl font-black text-foreground tracking-tight">{stat.value}</p>
                 </div>
               </div>
